@@ -1,3 +1,4 @@
+import 'package:biblioteca_temporal/views/LectorEditor_Screen.dart';
 import 'package:biblioteca_temporal/views/Libros_list_screen.dart';
 import 'package:biblioteca_temporal/views/login_screen.dart';
 import 'package:biblioteca_temporal/views/nuevo_libro_screen.dart';
@@ -52,6 +53,21 @@ class _MenuState extends State<Menu> {
                       showFab = true;
                       currelyText = "Libros";
                       //scrennCuncurry = const ();
+                    });
+
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text("Lectores"),
+                onTap: () {
+                  if (currelyText != "Lectores") {
+                    setState(() {
+                      showFab = false;
+                      currelyText = "Lectores";
+                      scrennCuncurry = const LectorEditor_Screen();
                     });
 
                     Navigator.pop(context);

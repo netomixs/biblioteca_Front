@@ -72,6 +72,23 @@ class _LibrosListScreenState extends State<LibrosListScreen> {
                                         IdLibro: libros![index]["Id"])),
                               );
                             },
+                            onPressedDelete: (p0) async {
+                             await LibroController.eliminar(libros![index]["Id"]).then((value){
+                              
+                              print(value);
+                              if(value["Code"]==200 && value["IsSuccess"]){
+                                  setState(() {
+                                    try {
+                                       libros!.removeAt(index);
+                                    } catch (e) {
+                                      print(e);
+                                    }
+                                   
+                                  });
+                              }
+
+                             });
+                            },
                             libro: libros![index],
                             index: index,
                           );
