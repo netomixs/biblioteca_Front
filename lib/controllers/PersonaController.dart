@@ -17,7 +17,7 @@ class PersonaController {
   }
 
   static Future<Map> actualizar(int id, String Nombre, String Apellido_P,
-      String Apellido_M, String Nacimiento, String Sexo, int autor) async {
+      String Apellido_M, String Nacimiento, String Sexo) async {
     var valres = {
       "Nombre": Nombre,
       "Apellido_P": Apellido_P,

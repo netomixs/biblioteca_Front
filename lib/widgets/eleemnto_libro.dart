@@ -79,24 +79,21 @@ class ElementLibro extends StatelessWidget {
             SizedBox(width: 10), // Espacio entre la imagen y el título
             // Columna para el título y el autor (lado izquierdo)
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    libro["Titulo"],
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  Text(
-                    "Autor: ${libro["autor"][0]["persona"]["Nombre"]} ${libro["autor"][0]["persona"]["Apellido_P"]} ${libro["autor"][0]["persona"]["Apellido_M"]}",
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
+                child: ListTile(
+                  onTap: onPressed,
+              title: Text(
+                libro["Titulo"],
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
               ),
-            ),
+              subtitle: Text(
+                "Autor: ${libro["autor"][0]["persona"]["Nombre"]} ${libro["autor"][0]["persona"]["Apellido_P"]} ${libro["autor"][0]["persona"]["Apellido_M"]}",
+                style: const TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            )),
           ],
         ),
       ),

@@ -201,13 +201,14 @@ class _NuevoLibroScreenState extends State<NuevoLibroScreen> {
                 ),
                 PrincipalButton(
                     isload: isLoad,
-                    text: "Agregar",
+                    text: "Ejecutar",
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         setState(() {
                           isLoad = true;
                         });
                         try {
+                        
                           await LibroController.insert(
                                   editText_Titulo.text,
                                   editText_ISBN.text,

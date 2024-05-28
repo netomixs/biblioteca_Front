@@ -191,6 +191,7 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
                               isLoad = true;
                             });
                             try {
+                               
                               await PersonaController.insert(
                                       editText_Nombre.text,
                                       editText_Apellido_P.text,
@@ -269,6 +270,67 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
                         } */
                           }
                         }),
+                           PrincipalButton(
+                          color: Color.fromARGB(0, 0, 0, 0),  
+                        isload: isLoad,
+                        text: "Actualizar",
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() {
+                              isLoad = true;
+                            });
+                            try {
+                               
+                              await PersonaController.actualizar(
+                                      idPersona,
+                                      editText_Nombre.text,
+                                      editText_Apellido_P.text,
+                                      editText_Apellido_M.text,
+                                      editText_Nacimiento.text,
+                                      editText_Sexo.text)
+                                  .then((value) {
+                                if (value["Code"] == 200) {
+                                  LectorController.actualizar(
+                                          editText_UDI.text,int.parse( editText_Id.text))
+                                      .then((valor) async {
+                                    setState(() {
+                                      isLoad = false;
+                                    });
+                                    if (valor["Code"] == 200) {
+                                      try {
+                                        editText_Id.text =
+                                            valor["Data"]["Id"].toString();
+                                      } catch (e) {
+                                        print(e);
+                                      }
+
+                                      AlertWindow.showSimpleDialog(context,
+                                          "Exito", "Registro completo");
+                                    } else {
+   
+                                      AlertWindow.showSimpleDialog(
+                                          context, "Error", "Ocurrio un error");
+                                    }
+                                  }).onError((error, stackTrace) async {
+ 
+                                    AlertWindow.showSimpleDialog(
+                                        context, "Error", "Ocurrio un error");
+                                    setState(() {
+                                      isLoad = false;
+                                    });
+                                  });
+                                }
+                                print(value);
+                              });
+                            } catch (e) {
+                              AlertWindow.showSimpleDialog(
+                                  context, "Error", "Ocurrio un error");
+                            }
+                      
+                          }
+                        }),
+                  
+                  
                   ],
                 ))));
   }
