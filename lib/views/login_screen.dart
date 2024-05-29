@@ -36,76 +36,80 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Padding(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Container(),
-          InputText(
-            controller: emailController,
-            hintText: "Correo",
-            keyboardType: TextInputType.emailAddress,
-            icon: Icons.email,
-            focusNode: _focusNode1,
-            onEditingComplete: () {},
-          ),
-          InputPassword(
-            controller: passwordController,
-            hintText: "Contraseña",
-            focusNode: _focusNode2,
-            icon: Icons.password,
-            keyboardType: TextInputType.visiblePassword,
-          ),
-          PrincipalButton(
-              isload: isLoad,
-              text: "Iniciar sesión",
-              onPressed: () async {
-                if (emailController.text.isNotEmpty &&
-                    passwordController.text.isNotEmpty) {
-                  setState(() {
-                    isLoad = true;
-                  });
-
-                  await LoginController.Login(
-                          /*emailController.text, passwordController.text*/ "netomix",
-                          "123456")
-                      .then((value) async {
-                    print(value);
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.only(left: 16,right: 16,bottom: 16,top: 128),
+        child: Column(
+          children: [
+            Container(),
+            InputText(
+              controller: emailController,
+              hintText: "Correo",
+              keyboardType: TextInputType.emailAddress,
+              icon: Icons.email,
+              focusNode: _focusNode1,
+              onEditingComplete: () {},
+            ),
+            InputPassword(
+              controller: passwordController,
+              hintText: "Contraseña",
+              focusNode: _focusNode2,
+              icon: Icons.password,
+              keyboardType: TextInputType.visiblePassword,
+            ),
+            PrincipalButton(
+                isload: isLoad,
+                text: "Iniciar sesión",
+                onPressed: () async {
+                  if (emailController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty) {
                     setState(() {
-                      isLoad = false;
+                      isLoad = true;
                     });
-                    if (value["Data"] != null) {
-                       try {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        prefs.setString('id',  "${value["Id"]}");
-                        print("Exito:-------------------------------");
-                       
-                      } catch (e) {
-                        print("Error:--------------------------------");
-                        print(e);
-                      }
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Menu(usuario: value["Data"])),
-                      );
-                     
-                      print(value["Data"]);
-                    } else {
-                      print("No login");
-                    }
-                  }).whenComplete(() => {});
 
-                  ///Lama al controlador de incio de sesion
-                } else {
-                  AlertWindow.showSimpleDialog(
-                      context, "Alerta", "Completa todos los campos");
-                  isLoad = false;
-                }
-              }),
-        ],
+                    await LoginController.Login(
+                            /*emailController.text, passwordController.text*/ "netomix",
+                            "123456")
+                        .then((value) async {
+                      print(value);
+                      setState(() {
+                        isLoad = false;
+                      });
+                      if (value["Data"] != null) {
+                        try {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setString('id', "${value["Data"]["Id"]}");
+                   
+                          print(prefs.get('id'));
+                          print("Exito:-------------------------------");
+                        } catch (e) {
+                          print("Error:--------------------------------");
+                          print(e);
+                        }
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Menu(usuario: value["Data"])),
+                        );
+
+                        print(value["Data"]);
+                      } else {
+                        print("No login");
+                      }
+                    }).whenComplete(() => {});
+
+                    ///Lama al controlador de incio de sesion
+                  } else {
+                    AlertWindow.showSimpleDialog(
+                        context, "Alerta", "Completa todos los campos");
+                    isLoad = false;
+                  }
+                }),
+          ],
+        ),
       ),
-    ),);
+    );
   }
 }

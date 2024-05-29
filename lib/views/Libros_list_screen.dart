@@ -8,7 +8,8 @@ import 'package:biblioteca_temporal/widgets/eleemnto_libro.dart';
 import 'package:flutter/material.dart';
 
 class LibrosListScreen extends StatefulWidget {
-  const LibrosListScreen({super.key});
+ 
+  const LibrosListScreen({super.key });
 
   @override
   State<LibrosListScreen> createState() => _LibrosListScreenState();
@@ -21,6 +22,7 @@ class _LibrosListScreenState extends State<LibrosListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
+          heroTag: "Nuevo Libro",
           onPressed: () async {
             await Navigator.push(
               context,
@@ -29,7 +31,7 @@ class _LibrosListScreenState extends State<LibrosListScreen> {
               ),
             );
           },
-          tooltip: 'Agregar experimento',
+          tooltip: 'Agregar libro',
           child: const Icon(Icons.add),
         ),
         body: Padding(

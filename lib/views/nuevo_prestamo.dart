@@ -1,11 +1,15 @@
 import 'package:biblioteca_temporal/controllers/LibroController.dart';
+import 'package:biblioteca_temporal/controllers/PrestamoController.dart';
 import 'package:biblioteca_temporal/views/editar_libro.dart';
+import 'package:biblioteca_temporal/widgets/alert_windows.dart';
 import 'package:biblioteca_temporal/widgets/eleemnto_libro.dart';
+import 'package:biblioteca_temporal/widgets/elemento_prestamo.dart';
 import 'package:biblioteca_temporal/widgets/input_Text.dart';
 import 'package:biblioteca_temporal/widgets/input_text_on_tap.dart';
 import 'package:biblioteca_temporal/widgets/principal_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NuevoPrestamo extends StatefulWidget {
   final int IdLibro;
@@ -84,14 +88,36 @@ class _NuevoPrestamoState extends State<NuevoPrestamo> {
                     isload: false,
                     text: "Ejecutar",
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        String? id = prefs.getString('id');
+                        print(id);
+                        await PrestamoController.insert(
+                                editText_fecha.text,
+                                "${widget.IdLibro}",
+                                id!,
+                                editText_IdLEctor.text)
+                            .then((value) async {
+                          print(value);
+                          if (value["Code"] == 201) {
+                            await AlertWindow.showSimpleDialog(context, "Exito",
+                                "Registro completo\nSu id de prestamo es: ${value["Data"]}");
+                            setState(() {});
+                          }
+                        });
+                      }
                     }),
               ],
             ),
           ),
-          SingleChildScrollView(
+          Expanded(
+              child: RefreshIndicator(
+            onRefresh: (() {
+              return LibroController.getPrestamoLibro(widget.IdLibro);
+            }),
             child: FutureBuilder(
-                future: LibroController.getLibros(),
+                future: LibroController.getPrestamoLibro(widget.IdLibro),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -100,58 +126,49 @@ class _NuevoPrestamoState extends State<NuevoPrestamo> {
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(child: Text('No images found'));
                   } else {
-                    var respuesta = snapshot.data!["Data"] as List<dynamic>;
+                    var respuesta = snapshot.data!["Data"] as dynamic;
 
-                    libros = respuesta;
-                    libros?.forEach(
-                      (element) {
-                        print(element["Imagen"]);
-                        ;
-                      },
-                    );
+                    libros = respuesta["prestamo"] as List<dynamic>;
+                    print(libros);
                     return ListView.separated(
                         shrinkWrap: true,
                         padding: const EdgeInsets.all(10),
                         itemCount: libros!.length,
                         itemBuilder: (BuildContext context, index) {
-                          print(
-                              libros![index]["autor"][0]["persona"]["Nombre"]);
-                          return ElementLibro(
-                            onPressedEdit: (p0) async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EditarLibroScreen(
-                                        IdLibro: libros![index]["Id"])),
-                              );
-                            },
-                            onPressed: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NuevoPrestamo(
-                                        IdLibro: libros![index]["Id"])),
-                              );
-                            },
+                          return ElementoPrestamo(
+                            index: index,
+                            Fecha_Entrega: libros![index]["Fecha_Entrega"],
+                            Fecha_Limite: libros![index]["Fecha_FIn"],
+                            Fecha_Prestamo: libros![index]["Fecha_Inicio"],
+                            id_Admin: "${libros![index]["Id_Administrador"]}",
+                            id_Lector: "${libros![index]["Id_Lector"]}",
+                            id_prestamo: "${libros![index]["Id"]}",
                             onPressedDelete: (p0) async {
-                              await LibroController.eliminar(
+                              await PrestamoController.eliminar(
                                       libros![index]["Id"])
                                   .then((value) {
                                 print(value);
-                                if (value["Code"] == 200 &&
-                                    value["IsSuccess"]) {
+                                if (value["Code"] == 200) {
                                   setState(() {
-                                    try {
-                                      libros!.removeAt(index);
-                                    } catch (e) {
-                                      print(e);
-                                    }
+                                    libros!.removeAt(index);
                                   });
                                 }
                               });
                             },
-                            libro: libros![index],
-                            index: index,
+                            onPressedEdit: (p0) async {
+                              await PrestamoController.update(
+                                      libros![index]["Id"],
+                                      libros![index]["Fecha_FIn"],
+                                      DateTime.now().toIso8601String())
+                                  .then((value) {
+                                if (value["Code"] == 201) {
+                                  setState(() {
+                            
+                                  });
+                                }
+                              });
+                            },
+                            onPressed: () {},
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) =>
@@ -160,7 +177,7 @@ class _NuevoPrestamoState extends State<NuevoPrestamo> {
                             ));
                   }
                 }),
-          )
+          ))
         ]),
       ),
     );

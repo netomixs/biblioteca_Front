@@ -72,7 +72,12 @@ class LibroController {
     var valres = {"Imagen": imagen};
     return await API.post("libro/${id}/image", valres);
   }
+
   static Future<Map> eliminar(int id) async {
     return await API.delete("libro", id);
+  }
+
+  static Future<Map> getPrestamoLibro(int id) async {
+    return API.get("/libro/$id/prestamos");
   }
 }

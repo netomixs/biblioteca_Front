@@ -31,7 +31,7 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
   DateTime pickedDate = DateTime(2017, 9, 7, 17, 30);
   bool isLoad = false;
   bool isSearch = false;
-  int idPersona=0;
+  int idPersona = 0;
   @override
   Widget build(BuildContext context) {
     editText_Sexo.text = "M";
@@ -74,11 +74,15 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
                                   print(value);
                                   var lector = value["Data"];
                                   editText_UDI.text = lector["UDI"];
-                                  editText_Nombre.text = lector["persona"]["Nombre"];
-                                  editText_Apellido_P.text = lector["persona"]["Apellido_P"];
-                                  editText_Apellido_M.text  = lector["persona"]["Apellido_M"];
-                                  editText_Nacimiento.text  = lector["persona"]["Nacimiento"];
-                                  idPersona=  lector["persona"]["Id"];
+                                  editText_Nombre.text =
+                                      lector["persona"]["Nombre"];
+                                  editText_Apellido_P.text =
+                                      lector["persona"]["Apellido_P"];
+                                  editText_Apellido_M.text =
+                                      lector["persona"]["Apellido_M"];
+                                  editText_Nacimiento.text =
+                                      lector["persona"]["Nacimiento"];
+                                  idPersona = lector["persona"]["Id"];
                                 });
                               } catch (e) {
                                 print(e);
@@ -191,7 +195,6 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
                               isLoad = true;
                             });
                             try {
-                               
                               await PersonaController.insert(
                                       editText_Nombre.text,
                                       editText_Apellido_P.text,
@@ -240,38 +243,10 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
                               AlertWindow.showSimpleDialog(
                                   context, "Error", "Ocurrio un error");
                             }
-                            /*try {
-                          await LibroController.insert(
-                                  editText_Titulo.text,
-                                  editText_ISBN.text,
-                                  editText_URL.text,
-                                  editText_Descripcion.text,
-                                  editText_Publicacion.text,
-                                  int.parse(editText_Existncias.text),
-                                  IdEditorial,
-                                  editText_Codigo.text,
-                                  IdGenero,
-                                  IdAutor)
-                              .then((value) {
-                            print(value);
-                            if (value["Code"] == 201) {
-                              AlertWindow.showSimpleDialog(
-                                  context, "Exito", "Registro completo");
-                            } else {
-                              AlertWindow.showSimpleDialog(
-                                  context, "Error", "Ocurrio un error");
-                            }
-                            setState(() {
-                              isLoad = false;
-                            });
-                          });
-                        } catch (e) {
-                          print(e);
-                        } */
                           }
                         }),
-                           PrincipalButton(
-                          color: Color.fromARGB(0, 0, 0, 0),  
+                    PrincipalButton(
+                        color: Color.fromARGB(0, 0, 0, 0),
                         isload: isLoad,
                         text: "Actualizar",
                         onPressed: () async {
@@ -280,7 +255,6 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
                               isLoad = true;
                             });
                             try {
-                               
                               await PersonaController.actualizar(
                                       idPersona,
                                       editText_Nombre.text,
@@ -290,8 +264,8 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
                                       editText_Sexo.text)
                                   .then((value) {
                                 if (value["Code"] == 200) {
-                                  LectorController.actualizar(
-                                          editText_UDI.text,int.parse( editText_Id.text))
+                                  LectorController.actualizar(editText_UDI.text,
+                                          int.parse(editText_Id.text))
                                       .then((valor) async {
                                     setState(() {
                                       isLoad = false;
@@ -307,12 +281,10 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
                                       AlertWindow.showSimpleDialog(context,
                                           "Exito", "Registro completo");
                                     } else {
-   
                                       AlertWindow.showSimpleDialog(
                                           context, "Error", "Ocurrio un error");
                                     }
                                   }).onError((error, stackTrace) async {
- 
                                     AlertWindow.showSimpleDialog(
                                         context, "Error", "Ocurrio un error");
                                     setState(() {
@@ -326,11 +298,8 @@ class _LectorEditor_ScreenState extends State<LectorEditor_Screen> {
                               AlertWindow.showSimpleDialog(
                                   context, "Error", "Ocurrio un error");
                             }
-                      
                           }
                         }),
-                  
-                  
                   ],
                 ))));
   }

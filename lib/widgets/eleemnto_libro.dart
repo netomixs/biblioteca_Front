@@ -69,18 +69,22 @@ class ElementLibro extends StatelessWidget {
           children: [
             // Container para la imagen (lado derecho)
             Container(
-              width: 100, // ajusta según el tamaño de tu imagen
-              height: 100, // ajusta según el tamaño de tu imagen
-              child: Image.network(
-                libro["Imagen"], // Reemplaza por la URL de tu imagen
-                fit: BoxFit.cover,
-              ),
-            ),
+                width: 100, // ajusta según el tamaño de tu imagen
+                height: 100, // ajusta según el tamaño de tu imagen
+                child: ((libro["Imagen"] == null ||
+                        !libro["Imagen"].startsWith('http')))
+                    ? Center(
+                        child: Text('URL de imagen inválida'),
+                      )
+                    : Image.network(
+                        libro["Imagen"],
+                        fit: BoxFit.cover,
+                      )),
             SizedBox(width: 10), // Espacio entre la imagen y el título
             // Columna para el título y el autor (lado izquierdo)
             Expanded(
                 child: ListTile(
-                  onTap: onPressed,
+              onTap: onPressed,
               title: Text(
                 libro["Titulo"],
                 style: const TextStyle(
