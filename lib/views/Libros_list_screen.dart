@@ -1,6 +1,5 @@
 import 'package:biblioteca_temporal/controllers/LibroController.dart';
-import 'package:biblioteca_temporal/models/api_response.dart';
-import 'package:biblioteca_temporal/models/libro.dart';
+ 
 import 'package:biblioteca_temporal/views/editar_libro.dart';
 import 'package:biblioteca_temporal/views/nuevo_libro_screen.dart';
 import 'package:biblioteca_temporal/views/nuevo_prestamo.dart';
@@ -76,6 +75,7 @@ class _LibrosListScreenState extends State<LibrosListScreen> {
                               );
                             },
                             onPressed: () async {
+                              print(libros![index]);
                                 await Navigator.push(
                                 context,
                                 MaterialPageRoute(

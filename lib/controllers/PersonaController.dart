@@ -1,7 +1,7 @@
 import 'package:biblioteca_temporal/controllers/Api.dart';
 
 class PersonaController {
-    static Future<Map> getLibro(int id) async {
+    static Future<Map> getPersona(int id) async {
     return API.get("persona/${id}");
   }
   static Future<Map> insert(String Nombre, String Apellido_P, String Apellido_M,

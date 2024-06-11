@@ -1,3 +1,4 @@
+import 'package:biblioteca_temporal/views/Editar_Perfil.dart';
 import 'package:biblioteca_temporal/views/LectorEditor_Screen.dart';
 import 'package:biblioteca_temporal/views/Libros_list_screen.dart';
 import 'package:biblioteca_temporal/views/Usuarios_Screen.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Menu extends StatefulWidget {
-  final  Map usuario;
+  final Map usuario;
   const Menu({super.key, required this.usuario});
 
   @override
@@ -18,7 +19,7 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   String currelyText = "Libros";
   bool showFab = true;
-  Widget scrennCuncurry =   const LibrosListScreen( );
+  Widget scrennCuncurry = const LibrosListScreen();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +28,7 @@ class _MenuState extends State<Menu> {
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.update))
           ],
-        ), 
+        ),
         drawer: Drawer(
           child: ListView(
             children: <Widget>[
@@ -39,7 +40,7 @@ class _MenuState extends State<Menu> {
                     setState(() {
                       showFab = true;
                       currelyText = "Libros";
-                      scrennCuncurry = LibrosListScreen ( );
+                      scrennCuncurry = LibrosListScreen();
                     });
 
                     Navigator.pop(context);
@@ -76,7 +77,7 @@ class _MenuState extends State<Menu> {
                   }
                 },
               ),
-                   ListTile(
+              ListTile(
                 leading: const Icon(Icons.person),
                 title: const Text("Usuarios"),
                 onTap: () {
@@ -87,6 +88,26 @@ class _MenuState extends State<Menu> {
                       scrennCuncurry = const Usuario_Screen();
                     });
 
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.person_4_rounded),
+                title: const Text("Perfil"),
+                onTap: () {
+                  if (currelyText != "Perfil") {
+                    var id = widget.usuario["Id"];
+                    if (id != null) {
+                      setState(() {
+                        showFab = false;
+                        currelyText = "Perfil";
+                        print(widget.usuario);
+                        scrennCuncurry = EditarPerfil(
+                          idUsuario: id,
+                        );
+                      });
+                    }
                     Navigator.pop(context);
                   }
                 },
@@ -122,7 +143,7 @@ class _MenuState extends State<Menu> {
       scrennCuncurry = const Column();
       showFab = true;
       currelyText = "Libros";
-      scrennCuncurry = LibrosListScreen(key: experimentoListKey );
+      scrennCuncurry = LibrosListScreen(key: experimentoListKey);
     });
   }
 }

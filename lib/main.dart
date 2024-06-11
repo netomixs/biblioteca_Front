@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) =>
-            id != null ? Menu(usuario: {"id": id}) : LoginScreen(),
+            id != null ? Menu(usuario: {"Id": int.parse(id)}) : LoginScreen(),
       ),
     );
   }
